@@ -5,7 +5,7 @@
 
 ## clickhouse-server
 支持多副本多分片,支持zookeeper一致性副本的高可用集群,修复了docker化部署的一些问题
-示例中是一个6节点3shard2副本的配置,真实部署需要修改docker IP和zookeeper指向地址
+示例中是一个3 Shard 2副本的配置,部署需要修改docker macros IP和zookeeper指向
 ## zookeeper-server
 一个三节点的zookeeper高可用集群,clickhouse用它来注册配置和维护副本一致性
 ## clickhouse-tabix
@@ -83,6 +83,6 @@ FROM url(
 
 ## 机器配置推荐
 
-硬盘存储: 31亿Github Events数据占用磁盘空间约在200G左右,同级别mysql占用了1T,验证ch的压缩效率约为mysql的5倍,推测单机百亿级别磁盘合理配置应在1T以上,需使用副本确保数据不丢失 \
-CPU和内存: 使用场景强相关,推荐单机最低配置在4c8G以上,设置多分片增强性能.CH会根据机器配置自动调整资源使用,使用2c4g在31亿数据集上查询出现memory_limit \
++ 硬盘存储: 31亿Github Events数据占用磁盘空间约在200G左右,同级别mysql占用了1T,验证ch的压缩效率约为mysql的5倍,推测单机百亿级别磁盘合理配置应在1T以上,需使用副本确保数据不丢失
++ CPU和内存: 使用场景强相关,推荐单机最低配置在4c8G以上,设置多分片增强性能.CH会根据机器配置自动调整资源使用,使用2c4g在31亿数据集上查询出现memory_limit
 
