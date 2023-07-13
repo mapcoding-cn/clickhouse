@@ -1,0 +1,2 @@
+# clickhouse
+开箱即用的容器化部署clickhouse高可用集群方案
