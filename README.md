@@ -86,3 +86,34 @@ FROM url(
 + 硬盘存储: 31亿Github Events数据占用磁盘空间约在200G左右,同级别mysql占用了1T,验证ch的压缩效率约为mysql的5倍,推测单机百亿级别磁盘合理配置应在1T以上,需使用副本确保数据不丢失
 + CPU和内存: 使用场景强相关,推荐单机最低配置在4c8G以上,设置多分片增强性能.CH会根据机器配置自动调整资源使用,使用2c4g在31亿数据集上查询出现memory_limit
 
+
+## 附:性能测试报告
+测试脚本
+clickhouse-benchmark -h 172.17.17.216 --user=map3zu --password=clickhouse@2023 -c 100  -i 1000 -r < log.txt
+
+### 查询性能
+--count
+SELECT count(*) from mapcoding.github_events_distributed where event_type='IssuesEvent';
+--group 
+SELECT actor_login,count(),uniq(repo_name) AS repos,uniq(repo_name, number) AS prs, replaceRegexpAll(substringUTF8(anyHeavy(body), 1, 100), '[\r\n]', ' ') AS comment FROM mapcoding.github_events_distributed WHERE (event_type = 'PullRequestReviewCommentEvent') AND (action = 'created') GROUP BY actor_login ORDER BY count() DESC LIMIT 50
+--join
+select count(*) from (SELECT repo_name from mapcoding.github_events_distributed where  event_type='IssuesEvent' limit 10000000)  A  left join (SELECT repo_name from mapcoding.github_events_distributed where  event_type='IssueCommentEvent' limit 10000000)  B ON A.repo_name=B.repo_name   ;
+--复合查询
+SELECT actor_login, COUNT(*) FROM mapcoding.github_events_distributed WHERE event_type='IssuesEvent' GROUP BY actor_login HAVING COUNT(*) > 10 ORDER BY count(*) DESC LIMIT 100
+--主键查询
+select actor_login from mapcoding.github_events_distributed where repo_name like 'elastic%' limit 100
+
+--二级索引 主键和索引粒度的选择对查询性能有致命的影响
+-- ALTER TABLE mapcoding.github_events ON cluster unimap_test ADD INDEX actor_login_index actor_login TYPE set(0) GRANULARITY 2;
+-- ALTER TABLE mapcoding.github_events ON cluster unimap_test MATERIALIZE INDEX actor_login_index;
+-- ALTER TABLE mapcoding.github_events ON cluster unimap_test DROP INDEX actor_login_index;
+SELECT count(*) FROM mapcoding.github_events_distributed WHERE actor_login='frank';
+
++ 限制查询并发在100以内,走主键的查询耗时90分位在1s左右
++ 大数据量的分析时间和索引相关度高,31亿数据分析走全表扫描约在10-20s
+
+### 写入性能
++ 批量插入测试31亿数据耗时3个小时,每秒插入数据在20-30w
++ 单条插入性能没有测试,预计不佳
+
+
