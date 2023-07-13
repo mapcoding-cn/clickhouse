@@ -1,0 +1,9 @@
+<yandex>
+    <macros>
+        <cluster>unimap_test</cluster>
+        <host>unimap-clickhouse-4</host>
+        <shard>1</shard>
+        <replica>1</replica>
+    </macros>
+    <database_atomic_delay_before_drop_table_sec>0</database_atomic_delay_before_drop_table_sec>
+</yandex>

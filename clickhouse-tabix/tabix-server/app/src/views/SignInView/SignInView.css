@@ -1,0 +1,22 @@
+.add-connection-btn {
+  width: 90%;
+  margin-top: 1em;
+}
+
+.form {
+  min-width: 350px;
+}
+
+.layout-connection-list {
+  overflow-x: hidden;
+
+}
+
+.logo {
+  float: left;
+}
+
+.logoimg {
+  width: 270px;
+  height: 110px;
+}

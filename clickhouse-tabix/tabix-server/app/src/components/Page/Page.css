@@ -1,0 +1,12 @@
+.root {
+  min-height: 100vh;
+}
+
+.main-container {
+  /* padding: 1.5em 50px; */
+}
+
+.ant-row-rtl #components-layout-demo-top .logo {
+  float: right;
+  margin: 16px 0 16px 24px;
+}

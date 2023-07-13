@@ -1,0 +1,12 @@
+.name {
+  padding-left: 0.30em;
+  font-size: 95%;
+  white-space: nowrap;
+  min-width: 150px;
+}
+
+.type {
+  font-family: monospace;
+  font-size: 75%;
+  color: silver;
+}
