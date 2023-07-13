@@ -92,7 +92,7 @@ FROM url(
 clickhouse-benchmark -h 172.17.17.216 --user=map3zu --password=clickhouse@2023 -c 100  -i 1000 -r < log.txt
 
 ### 查询性能
---count
+```--count
 SELECT count(*) from mapcoding.github_events_distributed where event_type='IssuesEvent';
 --group 
 SELECT actor_login,count(),uniq(repo_name) AS repos,uniq(repo_name, number) AS prs, replaceRegexpAll(substringUTF8(anyHeavy(body), 1, 100), '[\r\n]', ' ') AS comment FROM mapcoding.github_events_distributed WHERE (event_type = 'PullRequestReviewCommentEvent') AND (action = 'created') GROUP BY actor_login ORDER BY count() DESC LIMIT 50
@@ -108,7 +108,7 @@ select actor_login from mapcoding.github_events_distributed where repo_name like
 -- ALTER TABLE mapcoding.github_events ON cluster unimap_test MATERIALIZE INDEX actor_login_index;
 -- ALTER TABLE mapcoding.github_events ON cluster unimap_test DROP INDEX actor_login_index;
 SELECT count(*) FROM mapcoding.github_events_distributed WHERE actor_login='frank';
-
+```
 + 限制查询并发在100以内,走主键的查询耗时90分位在1s左右
 + 大数据量的分析时间和索引相关度高,31亿数据分析走全表扫描约在10-20s
 
