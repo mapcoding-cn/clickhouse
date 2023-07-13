@@ -1,6 +1,7 @@
 # clickhouse
 开箱即用的容器化部署clickhouse高可用集群方案
-![image](https://github.com/mapcoding-cn/clickhouse/assets/15833367/e1e548ff-5b32-437d-a04f-a662943f7d02)
+<img width="963" alt="image" src="https://github.com/mapcoding-cn/clickhouse/assets/15833367/c2681fc7-419e-4ddf-a247-b6b429d808ec">
+
 
 ## clickhouse-server
 支持多副本多分片,支持zookeeper一致性副本的高可用集群,修复了docker化部署的一些问题
