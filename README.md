@@ -11,6 +11,7 @@
 ## clickhouse-tabix
 一个支持语法高亮和代码提示的sql编辑器,可以部署前端访问clickhouse,该版本做了部分优化,仍有非常多的beta特性,但也足够使用
 
+## 创建测试数据集
 ```
 --创建数据库
 CREATE DATABASE mapcoding on CLUSTER map ; 
@@ -80,4 +81,8 @@ FROM url(
 ) SETTINGS max_http_get_redirects=10;
 ```
 
+## 机器配置
+
+硬盘存储: 31亿Github Events数据占用磁盘空间约在200G左右,同级别mysql占用了1T,验证ch的压缩效率约为mysql的5倍,推测单机百亿级别磁盘合理配置应在1T以上,需使用副本确保数据不丢失
+CPU和内存: 使用场景强相关,推荐单机最低配置在4c8G以上,设置多分片增强性能.CH会根据机器配置自动调整资源使用,使用2c4g在31亿数据集上查询出现memory_limit
 
